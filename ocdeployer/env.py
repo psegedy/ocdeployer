@@ -279,13 +279,10 @@ class LegacyEnvConfigHandler(EnvConfigHandler):
 
     def __init__(self, env_files):
         self.env_files = env_files
-        self._last_service_set = None
         _env_names = [self._get_env_name(fp) for fp in self.env_files]
-        self.env_names = _dedupe_preserve_order(_env_names)
-        if len(_env_names) != len(self.env_names):
-            log.warning("Duplicate env names provided: %s", _env_names)
+        super().__init__(_env_names)
 
-    def _load_vars_per_env(self):
+    def _load_vars_per_env(self, *args, **kwargs):
         data = {}
 
         for file_path in self.env_files:
